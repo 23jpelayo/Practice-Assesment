@@ -1,7 +1,7 @@
 students = {
-    "justin": {"first_name": "Justin", "surname": "Pelayo", "year": 12, "credits": [["Achieved", 58], ["Merit", 30], ["Excellence", 48]]},
-    "brian": {"first_name": "Brian", "surname": "Yang", "year": 12, "credits": [["Achieved", 29], ["Merit", 41], ["Excellence", 99]]},
-    "john": {"first_name": "John", "surname": "Smith", "year": 11, "credits": [["Achieved", 20], ["Merit", 35], ["Excellence", 50]]},
+    "justinpelayo": {"first_name": "Justin", "surname": "Pelayo", "year": 12, "credits": [["Not Achieved", 0],["Achieved", 58], ["Merit", 30], ["Excellence", 48]]},
+    "brianyang": {"first_name": "Brian", "surname": "Yang", "year": 12, "credits": [["Not Achieved", 0],["Achieved", 29], ["Merit", 41], ["Excellence", 99]]},
+    "johndoe": {"first_name": "John", "surname": "Doe", "year": 11, "credits": [["Not Achieved", 5],["Achieved", 20], ["Merit", 20], ["Excellence", 35]]},
 }
 
 def display_menu():
@@ -17,21 +17,22 @@ def display_menu():
 
 def all_data():
     # display all data
-    for student in students.values():
-        print(f"Name: {student["first_name"]} {student["surname"]}"
-              f"\nYear level: {student["year"]}"
-              f"\n{student["credits"][0][0]} Credits: {student["credits"][0][1]}"
-              f"\n{student["credits"][1][0]} Credits: {student["credits"][1][1]}"
-              f"\n{student["credits"][2][0]} Credits: {student["credits"][2][1]}")
+    for details in students.values():
+        print(f"Name: {details["first_name"]} {details["surname"]}"
+              f"\nYear level: {details["year"]}"
+              f"\n{details["credits"][0][0]} Credits: {details["credits"][0][1]}"
+              f"\n{details["credits"][1][0]} Credits: {details["credits"][1][1]}"
+              f"\n{details["credits"][2][0]} Credits: {details["credits"][2][1]}"
+              f"\n{details["credits"][3][0]} Credits: {details["credits"][3][1]}")
         print()
 
 def check_pass():
     # show who already passed NCEA
     students_passed = []
-    for student in students.values():
-        total_credits = (student["credits"][0][1] + student["credits"][1][1] + student["credits"][2][1])
+    for details in students.values():
+        total_credits = (details["credits"][1][1] + details["credits"][2][1] + details["credits"][3][1])
         if total_credits >= 60:
-            students_passed.append(student)
+            students_passed.append(details)
     
     print("Students who already passed:")
     for student in students_passed:
@@ -42,9 +43,9 @@ def check_endorsement():
     excellence_endorsed = []
     merit_endorsed = []
     for student in students.values():
-        if student["credits"][2][1] >= 50:
+        if student["credits"][3][1] >= 50:
             excellence_endorsed.append(f"{student['first_name']} {student['surname']}")
-        elif student["credits"][2][1] + student["credits"][1][1] >= 50:
+        elif student["credits"][3][1] + student["credits"][2][1] >= 50:
             merit_endorsed.append(f"{student['first_name']} {student['surname']}")
 
     print("Excellence endorsed:")
@@ -60,20 +61,72 @@ def student_year_level_summary():
     while True:
         try:
             year_level = int(input("Enter Year Level: "))
-            for student in students.values():
-                if student["year"] == year_level:
-                    print(f"Name: {student["first_name"]} {student["surname"]}"
-                        f"\nYear level: {student["year"]}"
-                        f"\n{student["credits"][0][0]} Credits: {student["credits"][0][1]}"
-                        f"\n{student["credits"][1][0]} Credits: {student["credits"][1][1]}"
-                        f"\n{student["credits"][2][0]} Credits: {student["credits"][2][1]}")
+            for details in students.values():
+                if details["year"] == year_level:
+                    print(f"Name: {details["first_name"]} {details["surname"]}"
+                        f"\nYear level: {details["year"]}"
+                        f"\n{details["credits"][0][0]} Credits: {details["credits"][0][1]}"
+                        f"\n{details["credits"][1][0]} Credits: {details["credits"][1][1]}"
+                        f"\n{details["credits"][2][0]} Credits: {details["credits"][2][1]}"
+                        f"\n{details["credits"][3][0]} Credits: {details["credits"][3][1]}")
             break
         except ValueError:
             print("Invalid input. Must be an integer")
 
-display_menu()
+def add_credits():
+    while True:
+        student_name = input("Enter student name: ").lower().replace(" ", "")
+        if student_name in students:
+            break
+        else:
+            print("Student not found")
+    print("Choose credit type:"
+          "\n1. Not Achieved"
+          "\n2. Achieved"
+          "\n3. Merit"
+          "\n4. Excellence")
+    while True:
+        try:
+            credit_type = int(input("Enter credit type: "))
+            if credit_type in [1, 2, 3, 4]:
+                try:
+                    credit = int(input("Enter amount of credits: "))
+                except ValueError:
+                    print("Input must be an integer")
+                current_credit = students[student_name]["credits"][credit_type-1][1]
+                current_credit += credit
+                students[student_name]["credits"][credit_type-1][1] = current_credit
+                break
+        except ValueError:
+            print("Invalid Input. Must be an Integer")
+    
+def add_new_student():
+    first_name = input("Enter first name: ")
+    first_name = list(first_name)
+    first_name[0] = first_name[0].upper()
+    first_name = "".join(first_name)
+    surname = input("Enter surname: ")
+    surname = list(surname)
+    surname[0] = surname[0].upper()
+    surname = "".join(surname)
+    while True:
+        try:
+            year_level = int(input("Enter year level: "))
+            not_achieved = int(input("Enter Not Achieved credits: "))
+            achieved = int(input("Enter Achieved credits: "))
+            merit = int(input("Enter Merit credits: "))
+            excellence = int(input("Enter Excellence credits: "))
+            break
+        except:
+            print("Must be an integer")
+    student_key = first_name.lower().replace(" ","") + surname.lower().replace(" ", "")
+    students[student_key] = {"first_name": first_name, "surname": surname, "year": year_level, "credits": [["Not Achieved", not_achieved], ["Achieved", achieved], ["Merit", merit], ["Excellence", excellence]]}
+
+
 
 while True:
+
+    display_menu()
     print("Enter (0) to exit")
     try:
         choice = int(input("Choose action: "))
@@ -87,9 +140,9 @@ while True:
             elif choice == 4:
                 student_year_level_summary()
             elif choice == 5:
-                pass
+                add_credits()
             elif choice == 6:
-                pass
+                add_new_student()
             else:
                 break
         else:
