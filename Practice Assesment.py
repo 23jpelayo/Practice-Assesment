@@ -14,8 +14,9 @@ def display_menu():
         "\n2. Students who has enough credits to pass"
         "\n3. Students who has enough credits for endorsement"
         "\n4. Summary of all students from a particular year level"
-        "\n5. Add credits to a student"
-        "\n6. Add new student and credit data"
+        "\n5. Summary of a certain student"
+        "\n6. Add credits to a student"
+        "\n7. Add new student and credit data"
     )
 
 
@@ -73,20 +74,42 @@ def student_year_level_summary():
     while True:
         try:
             year_level = int(input("Enter Year Level: "))
-            for details in students.values():
-                if details["year"] == year_level:
-                    print_student_details(details)
-            break
+            if 9 <= year_level <= 13:
+                for details in students.values():
+                    if details["year"] == year_level:
+                        print_student_details(details)
+                break
+            else:
+                print("Invalid year level")
         except ValueError:
             print("Invalid input. Must be an integer")
+        
+
+def student_summary():
+    # present the summary of a certain student
+    while True:
+        print("Enter (0) to go back")
+        student_name = input("Enter student name: ").lower().replace(" ", "")
+        if student_name in students:
+            print_student_details(students[student_name])
+            break
+        elif student_name == "0":
+            return
+            # This would exit the function and return the user to the menu
+        else:
+            print("Student not found. Please try again")
+
 
 
 def add_credits():
     # add credit to a student
     while True:
+        print("Enter (0) to go back")
         student_name = input("Enter student name: ").lower().replace(" ", "")
         if student_name in students:
             break
+        elif student_name == "0":
+            return
         else:
             print("Student not found")
     print("Choose credit type:"
@@ -98,18 +121,22 @@ def add_credits():
         try:
             credit_type = int(input("Enter credit type: "))
             if credit_type in [1, 2, 3, 4]:
-                try:
-                    credit = int(input("Enter amount of credits: "))
-                except ValueError:
-                    print("Input must be an integer")
-                current_credit = students[student_name]["credits"][credit_type-1][1]
-                current_credit += credit
-                students[student_name]["credits"][credit_type-1][1] = current_credit
-                break
+                while True:
+                    try:
+                        credit = int(input("Enter amount of credits: "))
+                        break
+                    except ValueError:
+                        print("Input must be an integer")
             else:
                 print("Choose one of the options")
         except ValueError:
             print("Invalid Input. Must be an Integer")
+
+        break
+
+    current_credit = students[student_name]["credits"][credit_type-1][1]
+    current_credit += credit
+    students[student_name]["credits"][credit_type-1][1] = current_credit
 
     
 def add_new_student():
@@ -127,7 +154,7 @@ def add_new_student():
             merit = int(input("Enter Merit credits: "))
             excellence = int(input("Enter Excellence credits: "))
             break
-        except:
+        except ValueError:
             print("Must be an integer")
     student_key = (first_name.lower() + surname.lower()).replace(" ", "")
     students[student_key] = {"first_name": first_name, "surname": surname, "year": year_level, "credits": [["Not Achieved", not_achieved], ["Achieved", achieved], ["Merit", merit], ["Excellence", excellence]]}
@@ -140,7 +167,7 @@ while True:
     print("Enter (0) to exit")
     try:
         choice = int(input("Choose action: "))
-        if choice in [0, 1, 2, 3, 4, 5, 6]:
+        if choice in [0, 1, 2, 3, 4, 5, 6, 7]:
             if choice == 1:
                 all_data()
             elif choice == 2:
@@ -150,8 +177,10 @@ while True:
             elif choice == 4:
                 student_year_level_summary()
             elif choice == 5:
-                add_credits()
+                student_summary()
             elif choice == 6:
+                add_credits()
+            elif choice == 7:
                 add_new_student()
             else:
                 break
