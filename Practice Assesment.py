@@ -20,9 +20,10 @@ def display_menu():
     )
 
 
-def print_student_details(details):
-    # print the students' information stored in the dictionary
-    print(f"Name: {details["first_name"]} {details["surname"]}"
+def all_data():
+    # display all data
+    for details in students.values():
+        print(f"Name: {details["first_name"]} {details["surname"]}"
               f"\nYear level: {details["year"]}"
               f"\n{details["credits"][0][0]} Credits: {details["credits"][0][1]}"
               f"\n{details["credits"][1][0]} Credits: {details["credits"][1][1]}"
@@ -74,13 +75,15 @@ def student_year_level_summary():
     while True:
         try:
             year_level = int(input("Enter Year Level: "))
-            if 9 <= year_level <= 13:
-                for details in students.values():
-                    if details["year"] == year_level:
-                        print_student_details(details)
-                break
-            else:
-                print("Invalid year level")
+            for details in students.values():
+                if details["year"] == year_level:
+                    print(f"Name: {details["first_name"]} {details["surname"]}"
+                        f"\nYear level: {details["year"]}"
+                        f"\n{details["credits"][0][0]} Credits: {details["credits"][0][1]}"
+                        f"\n{details["credits"][1][0]} Credits: {details["credits"][1][1]}"
+                        f"\n{details["credits"][2][0]} Credits: {details["credits"][2][1]}"
+                        f"\n{details["credits"][3][0]} Credits: {details["credits"][3][1]}")
+            break
         except ValueError:
             print("Invalid input. Must be an integer")
         
@@ -98,6 +101,7 @@ def student_summary():
             # This would exit the function and return the user to the menu
         else:
             print("Student not found. Please try again")
+
 
 
 
@@ -121,23 +125,16 @@ def add_credits():
         try:
             credit_type = int(input("Enter credit type: "))
             if credit_type in [1, 2, 3, 4]:
-                while True:
-                    try:
-                        credit = int(input("Enter amount of credits: "))
-                        break
-                    except ValueError:
-                        print("Input must be an integer")
-            else:
-                print("Choose one of the options")
+                try:
+                    credit = int(input("Enter amount of credits: "))
+                except ValueError:
+                    print("Input must be an integer")
+                current_credit = students[student_name]["credits"][credit_type-1][1]
+                current_credit += credit
+                students[student_name]["credits"][credit_type-1][1] = current_credit
+                break
         except ValueError:
             print("Invalid Input. Must be an Integer")
-
-        break
-
-    current_credit = students[student_name]["credits"][credit_type-1][1]
-    current_credit += credit
-    students[student_name]["credits"][credit_type-1][1] = current_credit
-
     
 def add_new_student():
     # add new student to the dictionary
