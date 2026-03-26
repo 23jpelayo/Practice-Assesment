@@ -17,6 +17,7 @@ def display_menu():
         "\n5. Summary of a certain student"
         "\n6. Add credits to a student"
         "\n7. Add new student and credit data"
+        "\n8. Delete a student"
     )
 
 
@@ -123,7 +124,8 @@ def add_credits():
             if credit_type in [1, 2, 3, 4]:
                 while True:
                     try:
-                        credit = int(input("Enter amount of credits: "))
+                        credit = int(input("Enter amount of credits: "))                  
+                        students[student_name]["credits"][credit_type-1][1] += credit
                         break
                     except ValueError:
                         print("Input must be an integer")
@@ -133,10 +135,6 @@ def add_credits():
             print("Invalid Input. Must be an Integer")
 
         break
-
-    current_credit = students[student_name]["credits"][credit_type-1][1]
-    current_credit += credit
-    students[student_name]["credits"][credit_type-1][1] = current_credit
 
     
 def add_new_student():
@@ -159,7 +157,19 @@ def add_new_student():
     student_key = (first_name.lower() + surname.lower()).replace(" ", "")
     students[student_key] = {"first_name": first_name, "surname": surname, "year": year_level, "credits": [["Not Achieved", not_achieved], ["Achieved", achieved], ["Merit", merit], ["Excellence", excellence]]}
 
+def delete_student():
+    # delete a student from the dictionary
+    while True:
+        print("Enter (0) to go back")
+        student_name = input("Enter student name: ").lower().replace(" ", "")
+        if student_name in students:
+            break
+        elif student_name == "0":
+            return
+        else:
+            print("Student not found")
 
+    del students[student_name]
 
 while True:
 
@@ -167,7 +177,7 @@ while True:
     print("Enter (0) to exit")
     try:
         choice = int(input("Choose action: "))
-        if choice in [0, 1, 2, 3, 4, 5, 6, 7]:
+        if choice in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
             if choice == 1:
                 all_data()
             elif choice == 2:
@@ -182,6 +192,8 @@ while True:
                 add_credits()
             elif choice == 7:
                 add_new_student()
+            elif choice == 8:
+                delete_student()
             else:
                 break
         else:
