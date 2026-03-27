@@ -170,6 +170,7 @@ def delete_student():
             print("Student not found")
 
     del students[student_name]
+    print("Student successfully deleted ")
 
 while True:
 
@@ -195,6 +196,7 @@ while True:
             elif choice == 8:
                 delete_student()
             else:
+                print("Exit Successful")
                 break
         else:
             print("Invalid Choice. Choose one of the options")
