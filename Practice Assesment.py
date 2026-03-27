@@ -197,7 +197,7 @@ while True:
             else:
                 break
         else:
-            print("Choose one of the options")
+            print("Invalid Choice. Choose one of the options")
 
     except ValueError:
         print("Invalid input. Must be an integer")
