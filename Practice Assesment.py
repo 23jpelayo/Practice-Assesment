@@ -124,9 +124,12 @@ def add_credits():
             if credit_type in [1, 2, 3, 4]:
                 while True:
                     try:
-                        credit = int(input("Enter amount of credits: "))                  
-                        students[student_name]["credits"][credit_type-1][1] += credit
-                        break
+                        credit = int(input("Enter amount of credits: "))
+                        if credit >= 0:
+                            students[student_name]["credits"][credit_type-1][1] += credit
+                            break
+                        else:
+                            print("Credit must be a positive integer.")
                     except ValueError:
                         print("Input must be an integer")
             else:
