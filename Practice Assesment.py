@@ -21,6 +21,18 @@ def display_menu():
     )
 
 
+def get_int(prompt):
+    while True:
+        try:
+            value = int(input(prompt))
+            if value < 0:
+                print("Must be a positive integer")
+            else:
+                return value
+        except ValueError:
+            print("Must be an integer")
+
+
 def print_student_details(details):
     # print the students' information stored in the dictionary
     print(f"Name: {details["first_name"]} {details["surname"]}"
@@ -71,19 +83,16 @@ def check_endorsement():
 
 
 def student_year_level_summary():
-    # display data of all student from a particular year level
+    # display data of all student from a particular year level\
     while True:
-        try:
-            year_level = int(input("Enter Year Level: "))
-            if 9 <= year_level <= 13:
-                for details in students.values():
-                    if details["year"] == year_level:
-                        print_student_details(details)
-                break
-            else:
-                print("Invalid year level")
-        except ValueError:
-            print("Invalid input. Must be an integer")
+        year_level = get_int("Enter Year Level (9 - 13): ")
+        if 9 <= year_level <= 13:
+            for details in students.values():
+                if details["year"] == year_level:
+                    print_student_details(details)
+            break
+        else:
+            print("Enter a valid year level (9 - 13)")
         
 
 def student_summary():
@@ -119,25 +128,13 @@ def add_credits():
           "\n3. Merit"
           "\n4. Excellence")
     while True:
-        try:
-            credit_type = int(input("Enter credit type: "))
-            if credit_type in [1, 2, 3, 4]:
-                while True:
-                    try:
-                        credit = int(input("Enter amount of credits: "))
-                        if credit >= 0:
-                            students[student_name]["credits"][credit_type-1][1] += credit
-                            break
-                        else:
-                            print("Credit must be a positive integer.")
-                    except ValueError:
-                        print("Input must be an integer")
-            else:
-                print("Choose one of the options")
-        except ValueError:
-            print("Invalid Input. Must be an Integer")
-
-        break
+        credit_type = get_int("Enter credit type: ")
+        if credit_type in [1, 2, 3, 4]:
+            credit = get_int("Enter amount of credits: ")
+            students[student_name]["credits"][credit_type-1][1] += credit
+            break
+        else:
+            print("Choose one of the options")
 
     
 def add_new_student():
@@ -148,15 +145,16 @@ def add_new_student():
     surname = input("Enter surname: ")
     surname = string.capwords(surname)
     while True:
-        try:
-            year_level = int(input("Enter year level: "))
-            not_achieved = int(input("Enter Not Achieved credits: "))
-            achieved = int(input("Enter Achieved credits: "))
-            merit = int(input("Enter Merit credits: "))
-            excellence = int(input("Enter Excellence credits: "))
+        year_level = get_int("Enter year level (9 - 13): ")
+        if 9 <= year_level <= 13:
             break
-        except ValueError:
-            print("Must be an integer")
+        else:
+            print("Enter a valid year level 9-13")
+        
+    not_achieved = get_int("Enter Not Achieved credits: ")
+    achieved = get_int("Enter Achieved credits: ")
+    merit = get_int("Enter Merit credits: ")
+    excellence = get_int("Enter Excellence credits: ")
     student_key = (first_name.lower() + surname.lower()).replace(" ", "")
     students[student_key] = {"first_name": first_name, "surname": surname, "year": year_level, "credits": [["Not Achieved", not_achieved], ["Achieved", achieved], ["Merit", merit], ["Excellence", excellence]]}
 
@@ -179,30 +177,27 @@ while True:
 
     display_menu()
     print("Enter (0) to exit")
-    try:
-        choice = int(input("Choose action: "))
-        if choice in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
-            if choice == 1:
-                all_data()
-            elif choice == 2:
-                check_pass()
-            elif choice == 3:
-                check_endorsement()
-            elif choice == 4:
-                student_year_level_summary()
-            elif choice == 5:
-                student_summary()
-            elif choice == 6:
-                add_credits()
-            elif choice == 7:
-                add_new_student()
-            elif choice == 8:
-                delete_student()
-            else:
-                print("Exit Successful")
-                break
+    choice = get_int("Choose action: ")
+    if choice in [0, 1, 2, 3, 4, 5, 6, 7, 8]:
+        if choice == 0:
+            print("Exit successful")
+            break
+        elif choice == 1:
+            all_data()
+        elif choice == 2:
+            check_pass()
+        elif choice == 3:
+            check_endorsement()
+        elif choice == 4:
+            student_year_level_summary()
+        elif choice == 5:
+            student_summary()
+        elif choice == 6:
+            add_credits()
+        elif choice == 7:
+            add_new_student()
+        elif choice == 8:
+            delete_student()
         else:
             print("Invalid Choice. Choose one of the options")
 
-    except ValueError:
-        print("Invalid input. Must be an integer")
