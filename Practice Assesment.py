@@ -2,7 +2,7 @@ import string
 
 students = {
     "justinpelayo": {"first_name": "Justin", "surname": "Pelayo", "year": 12, "credits": [["Not Achieved", 0],["Achieved", 58], ["Merit", 30], ["Excellence", 48]]},
-    "brianyang": {"first_name": "Brian", "surname": "Yang", "year": 12, "credits": [["Not Achieved", 0],["Achieved", 29], ["Merit", 41], ["Excellence", 99]]},
+    "peterjohnson": {"first_name": "Peter", "surname": "Johnson", "year": 13, "credits": [["Not Achieved", 0],["Achieved", 29], ["Merit", 41], ["Excellence", 99]]},
     "johndoe": {"first_name": "John", "surname": "Doe", "year": 11, "credits": [["Not Achieved", 5],["Achieved", 20], ["Merit", 20], ["Excellence", 35]]},
 }
 
