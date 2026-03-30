@@ -22,6 +22,7 @@ def display_menu():
 
 
 def get_int(prompt):
+    # validate the user input. No negative numbers are needed for this program so it also checks if number is >= 0
     while True:
         try:
             value = int(input(prompt))
@@ -85,11 +86,16 @@ def check_endorsement():
 def student_year_level_summary():
     # display data of all student from a particular year level\
     while True:
+        found = False
         year_level = get_int("Enter Year Level (9 - 13): ")
         if 9 <= year_level <= 13:
             for details in students.values():
                 if details["year"] == year_level:
                     print_student_details(details)
+                    found = True
+
+            if found == False:
+                print("There is currently no student in that year level")
             break
         else:
             print("Enter a valid year level (9 - 13)")
