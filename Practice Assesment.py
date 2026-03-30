@@ -56,7 +56,7 @@ def check_pass():
     students_passed = []
     for details in students.values():
         total_credits = (details["credits"][1][1] + details["credits"][2][1] + details["credits"][3][1])
-        if total_credits >= 60:
+        if total_credits >= NCEA_PASS:
             students_passed.append(details)
     
     print("Students who already passed:")
@@ -69,9 +69,9 @@ def check_endorsement():
     excellence_endorsed = []
     merit_endorsed = []
     for student in students.values():
-        if student["credits"][3][1] >= 50:
+        if student["credits"][3][1] >= NCEA_ENDORSEMENT:
             excellence_endorsed.append(f"{student['first_name']} {student['surname']}")
-        elif student["credits"][3][1] + student["credits"][2][1] >= 50:
+        elif student["credits"][3][1] + student["credits"][2][1] >= NCEA_ENDORSEMENT:
             merit_endorsed.append(f"{student['first_name']} {student['surname']}")
 
     print("Excellence endorsed:")
@@ -178,6 +178,10 @@ def delete_student():
 
     del students[student_name]
     print("Student successfully deleted ")
+
+NCEA_PASS = 80
+NCEA_ENDORSEMENT = 50
+
 
 while True:
 
